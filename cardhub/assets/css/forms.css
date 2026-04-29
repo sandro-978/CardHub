@@ -1,0 +1,23 @@
+.form-card {
+    max-width: 560px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 1px solid #d9dee8;
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+.form-help {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.error-message {
+    color: #b00020;
+    font-size: 0.875rem;
+    display: none;
+}
+
+.input-error + .error-message {
+    display: block;
+}

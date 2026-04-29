@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "card_name": "Drago Cremisi",
+    "game": "Fantasy Cards",
+    "edition": "Prima Edizione",
+    "language": "Italiano",
+    "condition": "Near Mint",
+    "price": 49.90,
+    "image_url": "/assets/img/placeholder-card.png"
+  },
+  {
+    "id": 2,
+    "card_name": "Mago delle Rune",
+    "game": "Fantasy Cards",
+    "edition": "Set Base",
+    "language": "Inglese",
+    "condition": "Excellent",
+    "price": 18.50,
+    "image_url": "/assets/img/placeholder-card.png"
+  },
+  {
+    "id": 3,
+    "card_name": "Cavaliere Antico",
+    "game": "Battle Deck",
+    "edition": "Promo",
+    "language": "Italiano",
+    "condition": "Good",
+    "price": 9.99,
+    "image_url": "/assets/img/placeholder-card.png"
+  }
+]

@@ -1,0 +1,31 @@
+DROP TABLE IF EXISTS listings;
+DROP TABLE IF EXISTS cards;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(60) NOT NULL UNIQUE,
+    email VARCHAR(120) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE cards (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(120) NOT NULL,
+    game VARCHAR(120) NOT NULL,
+    edition VARCHAR(120) NOT NULL,
+    language VARCHAR(40) NOT NULL,
+    image_url VARCHAR(255)
+);
+
+CREATE TABLE listings (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    card_id INTEGER NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
+    price NUMERIC(10, 2) NOT NULL CHECK (price > 0),
+    condition VARCHAR(40) NOT NULL,
+    description TEXT,
+    status VARCHAR(30) NOT NULL DEFAULT 'active',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

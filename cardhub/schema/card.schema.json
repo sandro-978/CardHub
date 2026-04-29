@@ -1,0 +1,14 @@
+{
+  "title": "Card",
+  "description": "Carta collezionabile gestita da CardHub",
+  "type": "object",
+  "properties": {
+    "id": { "type": "integer" },
+    "name": { "type": "string", "minLength": 1 },
+    "game": { "type": "string", "minLength": 1 },
+    "edition": { "type": "string", "minLength": 1 },
+    "language": { "type": "string", "enum": ["Italiano", "Inglese", "Giapponese"] }
+  },
+  "required": ["id", "name", "game", "edition", "language"],
+  "additionalProperties": false
+}

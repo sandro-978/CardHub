@@ -1,0 +1,38 @@
+:root {
+    --cardhub-surface: #f6f7fb;
+    --cardhub-border: #d9dee8;
+}
+
+body {
+    background: var(--cardhub-surface);
+}
+
+.hero {
+    background: linear-gradient(135deg, #ffffff, #e9eefb);
+    border: 1px solid var(--cardhub-border);
+}
+
+.search-panel,
+.feature-card,
+.cardhub-panel {
+    background: #ffffff;
+    border: 1px solid var(--cardhub-border);
+    border-radius: 1rem;
+    padding: 1.25rem;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.feature-card h3 {
+    font-size: 1.1rem;
+}
+
+@media screen and (max-width: 768px) {
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+}
