@@ -13,7 +13,7 @@ INSERT INTO listings (user_id, card_id, price, condition, description) VALUES
 (1, 3, 9.99, 'Good', 'Carta giocata ma integra.');
 
 INSERT INTO chats (id_annuncio, id_acquirente, id_venditore) VALUES
-(1,1,2);
+(1,2,1);
 
 INSERT INTO messaggi(id_chat,user_id,testo) VALUES
 (1,2, 'Ciao, la carta è ancora disponibile?');
