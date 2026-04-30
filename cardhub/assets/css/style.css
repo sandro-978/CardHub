@@ -10,13 +10,15 @@ body {
 .hero {
     background: linear-gradient(135deg, #ffffff, #e9eefb);
     border: 1px solid var(--cardhub-border);
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
 }
 
 .search-panel,
 .feature-card,
 .cardhub-panel {
-    background: #ffffff;
+    background: #ffffff49;
     border: 1px solid var(--cardhub-border);
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
     border-radius: 1rem;
     padding: 1.25rem;
 }

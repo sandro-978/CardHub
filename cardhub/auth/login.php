@@ -3,6 +3,7 @@ $pageTitle = 'Login';
 require __DIR__ . '/../includes/header.php';
 ?>
 <div class="form-card">
+    <link rel="stylesheet" href="/assets/css/forms.css">
     <h1 class="h3 mb-3">Login</h1>
     <form action="/auth/login-handler.php" method="POST" class="d-grid gap-3">
         <div>

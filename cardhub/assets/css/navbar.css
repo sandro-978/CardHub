@@ -827,13 +827,7 @@
             position: relative;
         }
 
-        .form-label {
-            display: block;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 500;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-        }
+        
 
         .form-input,
         .form-textarea {
