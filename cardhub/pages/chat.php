@@ -17,7 +17,7 @@ require_once __DIR__."/../includes/navbar.php";
 ?>
 
 <main class="container">
-    <h1>Chat</h1>
+    <h1 class="chat-title"Chat></h1>
 
     <section id= "contenitore-messaggi" class="contenitore-messaggi"></section>
 

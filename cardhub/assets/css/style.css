@@ -38,14 +38,18 @@ body {
         grid-template-columns: 1fr;
     }
 }
-
+.chat-title {
+    color: white
+}
 .contenitore-messaggi {
     height: 400px;
     overflow-y: auto;
-    border: 1px solid #ddd;
+    border: 1px solid var(--cardhub-border);
     padding: 1rem;
     margin-bottom: 1rem;
-    background: #f8f8f8;
+    background: #ffffff49;
+    border-radius: 1rem;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
 }
 .messaggio{
     max-width: 70%;
@@ -64,8 +68,14 @@ body {
 #form-messaggio{
     display: flex;
     gap: 0.5rem;
+    background: #ffffff49;
+    border: 1px solid var(--cardhub-border);
+    border-radius: 1rem;
+    padding: 0.75rem;
 }
 #input-messasggio{
     flex: 1;
     padding: 0.7rem;
+    border-radius: 0.7rem;
+    border: 1px solid var(--cardhub-border)
 }
