@@ -8,7 +8,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background: linear-gradient(135deg, #667eea 0%, #2f00ff 50%, #00d9ff 100%);
             min-height: 100vh;
             padding: 0;
             margin: 0;
@@ -64,12 +64,7 @@
             left: 100%;
         }
 
-        .navbar:hover {
-            transform: translateY(-2px);
-            box-shadow: 
-                0 25px 50px rgba(0, 0, 0, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
-        }
+        
 
         /* ==================== LOGO SECTION ==================== */
         .navbar-brand {
@@ -204,7 +199,8 @@
             transform: scale(1.1);
         }
 
-        /* ==================== MOBILE MENU TOGGLE ==================== */        .mobile-toggle {
+        /* ==================== MOBILE MENU TOGGLE ==================== */        
+        .mobile-toggle {
             display: none;
             background: none;
             border: none;
@@ -645,6 +641,7 @@
         .footer {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
+            text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 50px;
             margin: 30px auto 40px;
@@ -656,6 +653,7 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.2);
             position: relative;
             overflow: hidden;
+            color: white;
         }
 
         .footer::before {
