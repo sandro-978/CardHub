@@ -38,3 +38,34 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+.contenitore-messaggi {
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: #f8f8f8;
+}
+.messaggio{
+    max-width: 70%;
+    margin-bottom: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 10px;
+}
+.messaggio-mio{
+    margin-left: auto;
+    background: #d1e7dd;
+}
+.messaggio-altro{
+    margin-right: auto;
+    background: white;
+}
+#form-messaggio{
+    display: flex;
+    gap: 0.5rem;
+}
+#input-messasggio{
+    flex: 1;
+    padding: 0.7rem;
+}
