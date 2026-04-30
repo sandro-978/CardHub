@@ -3,7 +3,7 @@ const formMessaggio = document.getElementById("form-messaggio");
 const inputMessaggio = document.getElementById("input-messaggio");
 
 function caricaMessaggi(){
-    fetch('../api/messaggi.php?id_chat=${ID_CHAT}')
+    fetch(`../api/messaggi.php?id_chat=${ID_CHAT}`)
         .then(risposta => risposta.json())
         .then(dati => {
             if(!dati.successo){
@@ -16,12 +16,16 @@ function caricaMessaggi(){
                 
                 const divMessaggio = document.createElement("div");
 
-                if (Number(messaggio.user.id) === Number(ID_UTENTE_CORRENTE)){
+                if (Number(messaggio.user_id) === Number(ID_UTENTE_CORRENTE)){
                     divMessaggio.className = "messaggio messaggio-mio";
                 }
                 else{
-                    divMessaggio.className = "messaggio messagio-altro";
+                    divMessaggio.className = "messaggio messaggio-altro";
                 }
+                divMessaggio.innerHTML = `
+                    <p> ${messaggio.testo} </p>
+                    <small>${messaggio.created_at}</small>
+                `;
 
                 contenitoreMessaggi.appendChild(divMessaggio);
             });
