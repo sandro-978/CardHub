@@ -10,6 +10,7 @@
                 <li class="nav-item"><a class="nav-link" href="/pages/marketplace.php">Marketplace</a></li>
                 <li class="nav-item"><a class="nav-link" href="/pages/create-listing.php">Nuovo annuncio</a></li>
                 <li class="nav-item"><a class="nav-link" href="/pages/my-listings.php">I miei annunci</a></li>
+                <li class="nav-item"><a class="nav-link" href="/pages/messaggi.php">Messaggi</a></li>
                 <li class="nav-item"><a class="nav-link" href="/pages/dashboard.php">Dashboard</a></li>
             </ul>
             <div class="d-flex gap-2">

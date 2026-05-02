@@ -17,11 +17,11 @@ require_once __DIR__."/../includes/navbar.php";
 ?>
 
 <main class="container">
-    <h1 class="chat-title"Chat></h1>
+    <h1 class="chat-title">Chat</h1>
 
     <section id= "contenitore-messaggi" class="contenitore-messaggi"></section>
 
-    <form id="form messaggio">
+    <form id="form-messaggio">
         <input
             type="text"
             id="input-messaggio"

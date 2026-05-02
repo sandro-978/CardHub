@@ -16,6 +16,15 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION["user_id"];
 $metodo = $_SERVER['REQUEST_METHOD'];
+$dbconn = getDbConnection();
+
+if(!$dbconn){
+    echo json_encode([
+        "successo" => false,
+        "errore" => "Connessione al db fallita"
+    ]);
+    exit;
+}
 
 if ($metodo === 'GET') {
     $id_chat = $_GET['id_chat'] ?? null;
@@ -27,19 +36,28 @@ if ($metodo === 'GET') {
         ]);
         exit;
     }
-
-    $query = $pdo->prepare("
-        SELECT user_id, testo, created_at
-        FROM messaggi
-        WHERE id_chat = ?
-        ORDER BY created_at ASC
-    ");
-
-    $query -> execute([$id_chat]);
-
+    $result = pg_query_params(
+        $dbconn,
+        "SELECT user_id,testo,created_at
+         FROM messaggi
+         WHERE id_chat = $1
+         ORDER BY created_at ASC",
+         [$id_chat]
+    );
+    if(!$result){
+        echo json_encode([
+            "successo"=> false,
+            "errore" => "errore nel caricamento dei messaggi"
+        ]);
+        exit;
+    }
+    $messaggi = pg_fetch_all($result);
+    if($messaggi === false){
+        $messaggi = [];
+    }
     echo json_encode([
         "successo" => true,
-        "messaggi" => $query->fetchAll(PDO::FETCH_ASSOC)
+        "messaggi"=> $messaggi
     ]);
     exit;
 }
@@ -48,7 +66,7 @@ if ($metodo === "POST"){
 
     $dati = json_decode(file_get_contents("php://input"), true);
     $id_chat = $dati["id_chat"] ?? null;
-    $testo = $dati["testo"] ?? '';
+    $testo = trim($dati["testo"] ?? '');
 
     if(!$id_chat || $testo === ''){
         echo json_encode([
@@ -57,12 +75,21 @@ if ($metodo === "POST"){
         ]);
         exit;
     }
-    $query = $pdo->prepare("
-        INSERT INTO messaggi (id_chat, user_id, testo)
-        VALUES (?,?,?)
-    ");
-
-    $query -> execute([$id_chat,$user_id, $testo]);
+    $result = pg_query_params(
+        $dbconn,
+        "INSERT INTO messaggi (id_chat,user_id,testo)
+        VALUES ($1,$2,$3)
+        ",
+         [$id_chat,$user_id,$testo]
+    );
+    if(!$result){
+        echo json_encode([
+            "successo"=> false,
+            "errore" => "errore nell'invio dei messaggi"
+        ]);
+        exit;
+    }
+    
     echo json_encode([
         "successo" => true,
     ]);
