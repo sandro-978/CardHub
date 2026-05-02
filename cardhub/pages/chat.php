@@ -28,7 +28,7 @@ require_once __DIR__."/../includes/navbar.php";
             placeholder="Scrivi un messaggio..."
             required
         >
-        <button type="submit">Invia</button>
+        <button type="submit"> ➤ </button>
     </form>
 </main>
 
