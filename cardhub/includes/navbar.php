@@ -18,7 +18,7 @@
                     <a class="btn btn-outline-light btn-sm" href="/pages/profile.php"><?= htmlspecialchars(currentUserName()) ?></a>
                     <a class="btn btn-warning btn-sm" href="/auth/logout.php">Logout</a>
                 <?php else: ?>
-                    <a class="btn btn-outline-light btn-sm" href="/auth/login.php">Login</a>
+                    <a class="btn btn-warning btn-sm" href="/auth/login.php">Login</a>
                     <a class="btn btn-primary btn-sm" href="/auth/register.php">Registrati</a>
                 <?php endif; ?>
             </div>

@@ -29,3 +29,4 @@ http://localhost:8000/index.php
 ## Stato
 
 Versione iniziale: struttura base, pagine principali, mock data, validazioni client e schema SQL iniziale.
+TODO collegare la chat al venditore

@@ -4,10 +4,14 @@ require __DIR__ . '/../includes/header.php';
 ?>
 <div class="form-card">
     <h1 class="h3 mb-3">Pubblica un annuncio</h1>
-    <form name="listingForm" action="#" method="POST" onsubmit="return validateListingForm()" class="d-grid gap-3">
+    <form name="listingForm" action="../api/listings.php" method="POST" enctype="multipart/form-data" onsubmit="return validateListingForm()" class="d-grid gap-3">
         <div>
             <label class="form-label" for="cardName">Nome carta</label>
             <input class="form-control" id="cardName" name="cardName" type="text" required>
+        </div>
+        <div>
+            <label class="form-label" for="game">Gioco</label>
+            <input class="form-control" id="game" name = "game" type="text" required>
         </div>
         <div>
             <label class="form-label" for="edition">Edizione</label>
@@ -20,6 +24,10 @@ require __DIR__ . '/../includes/header.php';
                 <option value="Inglese">Inglese</option>
                 <option value="Giapponese">Giapponese</option>
             </select>
+        </div>
+        <div>
+            <label class="form-label" for="cardImage">Immagine carta</label>
+            <input class="form-control" id="cardImage" name="cardImage" type="file" accept="image/*">
         </div>
         <div>
             <label class="form-label" for="condition">Condizione</label>
