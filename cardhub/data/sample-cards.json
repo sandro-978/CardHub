@@ -1,0 +1,5 @@
+[
+  { "id": 1, "name": "Drago Cremisi", "game": "Fantasy Cards", "edition": "Prima Edizione", "language": "Italiano" },
+  { "id": 2, "name": "Mago delle Rune", "game": "Fantasy Cards", "edition": "Set Base", "language": "Inglese" },
+  { "id": 3, "name": "Cavaliere Antico", "game": "Battle Deck", "edition": "Promo", "language": "Italiano" }
+]

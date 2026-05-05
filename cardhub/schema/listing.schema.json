@@ -1,0 +1,17 @@
+{
+  "title": "Listing",
+  "description": "Annuncio di vendita associato a una carta collezionabile",
+  "type": "object",
+  "properties": {
+    "id": { "type": "integer" },
+    "card_name": { "type": "string", "minLength": 1 },
+    "game": { "type": "string" },
+    "edition": { "type": "string" },
+    "language": { "type": "string", "enum": ["Italiano", "Inglese", "Giapponese"] },
+    "condition": { "type": "string", "enum": ["Near Mint", "Excellent", "Good", "Played"] },
+    "price": { "type": "number", "exclusiveMinimum": 0 },
+    "image_url": { "type": "string" }
+  },
+  "required": ["id", "card_name", "edition", "language", "condition", "price"],
+  "additionalProperties": false
+}
