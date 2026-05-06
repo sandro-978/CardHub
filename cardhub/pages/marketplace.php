@@ -24,7 +24,7 @@ if(count($params) > 0){
     $result = pg_query_params($dbconn, $sql, $params);
 }
 else{
-    $result = pg_query($dbconn, $sql); 
+    $result = pg_query($dbconn, $sql);
 }
 if(!$result){
     die("errore caricamento annunci");

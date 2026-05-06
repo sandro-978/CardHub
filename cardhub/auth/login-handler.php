@@ -32,7 +32,8 @@ if (!$result || pg_num_rows($result) !== 1) {
 $user = pg_fetch_assoc($result);
 
 if (!password_verify($password, $user['password_hash'])) {
-    die('Errore: credenziali non valide.');
+    header('location: /auth/error-handler.php');
+    exit;
 }
 
 $_SESSION['user_id'] = $user['id'];

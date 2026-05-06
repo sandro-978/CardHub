@@ -43,6 +43,7 @@ if($metodo === 'POST'){
         exit;
     }
 
+    $estensioni = ['png', 'jpg', 'jpeg','gif','webp'];
     $user_id = $_SESSION['user_id'];
     $cardName = trim($_POST['cardName'] ?? '');
     $game = trim($_POST['game'] ??'');
@@ -71,7 +72,7 @@ if($metodo === 'POST'){
             die('estensione immagine non valida');
         }
 
-        $nomeFile = uniqid("card_",true).'.'.$estensioni;
+        $nomeFile = uniqid("card_",true).'.'.$estensione;
         $destinazione = $uploadDir.$nomeFile;
         if(!move_uploaded_file($fileTmpPath,$destinazione)){
             die('Errore caricamento immagine');

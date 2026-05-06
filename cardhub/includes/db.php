@@ -4,7 +4,12 @@ require_once __DIR__ . '/config.php';
 function getDbConnection()
 {
     $connectionString = sprintf(
-        'host=%s port=%s dbname=%s user=%s password=%s',
+        'host=%s
+         port=%s
+         dbname=%s
+         user=%s
+         password=%s',
+
         DB_HOST,
         DB_PORT,
         DB_NAME,
