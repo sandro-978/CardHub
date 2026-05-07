@@ -27,7 +27,7 @@ if($metodo === 'GET'){
     }
 
     $listings = pg_fetch_all($result);
-    if($listing === false){
+    if($listings === false){
         $listings = [];
     }
     echo json_encode([

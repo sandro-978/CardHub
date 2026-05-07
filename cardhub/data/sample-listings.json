@@ -7,7 +7,7 @@
     "language": "Italiano",
     "condition": "Near Mint",
     "price": 49.90,
-    "image_url": "/assets/img/placeholder-card.png"
+    "image_url": "/assets/img/uploaded/drago-cremisi.jpg"
   },
   {
     "id": 2,
@@ -17,7 +17,7 @@
     "language": "Inglese",
     "condition": "Excellent",
     "price": 18.50,
-    "image_url": "/assets/img/placeholder-card.png"
+    "image_url": "/assets/img/uploaded/mago-delle-rune.jpg"
   },
   {
     "id": 3,
@@ -27,6 +27,6 @@
     "language": "Italiano",
     "condition": "Good",
     "price": 9.99,
-    "image_url": "/assets/img/placeholder-card.png"
+    "image_url": "/assets/img/uploaded/cavaliere-antico.jpg"
   }
 ]
