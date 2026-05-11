@@ -320,6 +320,7 @@ body {
     max-width: 520px;
     padding: 0.9rem 1rem;
     border-radius: 1rem;
+    margin-bottom: 1rem;
 
     background: rgba(255, 255, 255, 0.12);
     color: white;
@@ -339,5 +340,40 @@ body {
 
     .card-detail-price {
         font-size: 2.3rem;
+    }
+}
+.filter-panel{
+    display: none;
+    margin-bottom: 2rem;
+    padding:1.3rem;
+    border-radius: 1.4rem;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(0, 0, 0, 0.12);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+.filter-panel.open{
+    display: block;
+}
+.filter-grid{
+    display: grid;
+    grid-template-columns: repeat(3,minmax(180px,1fr));
+    gap: 1rem;
+}
+.filter-panel .form-label{
+    color: white;
+    font-weight: 600;
+}
+.filter-actions{
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+@media (max-width: 900px){
+    .filter-grid{
+        grid-template-columns: 1fr;
+    }
+    .filter-actions{
+        flex-direction: column;
     }
 }
