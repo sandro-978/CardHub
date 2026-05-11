@@ -1,4 +1,12 @@
 <?php
+
+require_once __DIR__ . '/../includes/session.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: /auth/login.php");
+    exit;
+}
+
 $pageTitle = 'Nuovo annuncio';
 require __DIR__ . '/../includes/header.php';
 ?>
@@ -11,7 +19,16 @@ require __DIR__ . '/../includes/header.php';
         </div>
         <div>
             <label class="form-label" for="game">Gioco</label>
-            <input class="form-control" id="game" name = "game" type="text" required>
+            <select class="form-select" id="game" name="game"required>
+
+                <option value="">Seleziona un gioco</option>
+                <option value="Yu-Gi-Oh!">Yu-Gi-Oh!</option>
+                <option value="Magic">Magic</option>
+                <option value="Pokemon">Pokemon</option>
+                <option value="Battle Deck">Battle Deck</option>
+                <option value="Fantasy Cards">Fantasy Cards</option>
+
+            </select>
         </div>
         <div>
             <label class="form-label" for="edition">Edizione</label>
