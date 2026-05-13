@@ -50,14 +50,30 @@ if($metodo === 'POST'){
     $edition = trim($_POST['edition'] ?? '');
     $language = trim($_POST['language'] ?? '');
     $condition = trim($_POST['condition'] ?? '');
-    $price = trim($_POST['price'] ?? '');
+    
     $description = trim($_POST['description'] ?? '');
     if($cardName === '' || $edition === '' || $language === '' || $condition === '' || $price === '' || $game === ''){
         die('Dati mancanti');
     }
-    if(!is_numeric($price) || $price <= 0){
-        die('Prezzo non valido');
+
+    $priceRaw = trim($_POST['price'] ?? '');
+    $priceRaw = str_replace(',', '.', $priceRaw);
+
+    if (!preg_match('/^\d+(\.\d{1,2})?$/', $priceRaw)) {
+        die('Prezzo non valido. Usa massimo due cifre decimali.');
     }
+
+    $priceFloat = (float)$priceRaw;
+
+    if ($priceFloat <= 0) {
+        die('Prezzo non valido. Il prezzo deve essere maggiore di zero.');
+    }
+
+    if ($priceFloat > 99999999.99) {
+        die('Prezzo troppo alto. Il massimo consentito è 99.999.999,99.');
+    }
+
+    $price = number_format($priceFloat, 2, '.', '');
 
     $imageUrl = '/assets/img/placeholder-card.png';
     if(isset($_FILES['cardImage']) && $_FILES['cardImage']['error'] === UPLOAD_ERR_OK){

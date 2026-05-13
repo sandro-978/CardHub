@@ -47,6 +47,12 @@ async function updateListings(filterId) {
 
 }
 
+async function countListings(currentUserId) {
+    const response = await fetch(`/api/listings.php?user_id=${currentUserId}`);
+    const listings = await response.json();
+    return listings.length;
+}
+
 // Attendi il caricamento completo del DOM
 document.addEventListener('DOMContentLoaded', function () {
     // Carica gli annunci nel contenitore specificato

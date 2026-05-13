@@ -57,8 +57,24 @@ require __DIR__ . '/../includes/header.php';
         </div>
         <div>
             <label class="form-label" for="price">Prezzo</label>
-            <input class="form-control" id="price" name="price" type="number" min="0.01" step="0.01" required>
-            <div class="error-message">Il prezzo deve essere maggiore di zero.</div>
+            <input
+                class="form-control"
+                id="price"
+                name="price"
+                type="number"
+                min="0.01"
+                max="99999999.99"
+                step="0.01"
+                required
+            >
+
+            <div id="priceError" class="text-danger small mt-1 d-none">
+                Il prezzo massimo consentito è 99.999.999,99 €.
+            </div>
+
+            <div class="form-text">
+                Prezzo massimo: 99.999.999,99 €.
+            </div>
         </div>
         <div>
             <label class="form-label" for="description">Descrizione</label>
