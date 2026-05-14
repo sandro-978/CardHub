@@ -9,7 +9,7 @@
             "driver": "PostgreSQL",
             "name": "cardhub",
             "database": "cardhub",
-            "username": "postgress"
+            "username": "postgres"
         }
     ]
 }

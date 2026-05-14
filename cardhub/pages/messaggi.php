@@ -52,6 +52,7 @@ if($chats === false){
     $chats = [];
 }
 ?>
+<link rel="stylesheet" href="/assets/css/navbar.css">
 
 <main class= "container">
     <h1 class= "chat-title">Messaggi</h1>
