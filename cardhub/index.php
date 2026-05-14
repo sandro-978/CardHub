@@ -27,9 +27,28 @@ require __DIR__ . '/includes/header.php';
 <section>
     <h2 class="h4 mb-3">Funzioni previste</h2>
     <div class="feature-grid">
-        <article class="feature-card"><h3>Marketplace</h3><p>Lista annunci con prezzo, condizione, lingua ed edizione.</p></article>
-        <article class="feature-card"><h3>Gestione utenti</h3><p>Registrazione, login, profilo e sessione utente.</p></article>
-        <article class="feature-card"><h3>Gestione annunci</h3><p>Creazione, modifica, pubblicazione e rimozione degli annunci.</p></article>
+        <article class="feature-card"><h3>✔️Marketplace✔️</h3><p>Lista annunci con prezzo, condizione, lingua ed edizione.</p></article>
+        <article class="feature-card"><h3>✔️Gestione utenti✔️</h3><p>Registrazione, login, profilo e sessione utente.</p></article>
+        <article class="feature-card"><h3>✔️Gestione annunci✔️</h3><p>Creazione, modifica, pubblicazione e rimozione degli annunci.</p></article>
+    </div>
+    <div class="cardhub-panel">
+        <h2 class="h3 mb-3">Funzioni da implementare</h2>
+
+        <ul class="list-group">
+            <li class="list-group-item">✔️Filtri avanzati nel marketplace✔️ (pulsante filtra)</li>
+            <li class="list-group-item">✔️Ordinamento annunci per prezzo, data e condizione✔️ (pulsante ordinamento)</li>
+            <li class="list-group-item">Sistema di annunci preferiti</li>
+            <li class="list-group-item">Chat completa tra acquirente e venditore</li>
+            <li class="list-group-item">Notifiche per nuovi messaggi</li>
+            <li class="list-group-item">Dashboard con statistiche reali</li>
+            <li class="list-group-item">Storico attività dell’utente</li>
+            <li class="list-group-item">Impostazioni privacy del profilo</li>
+            <li class="list-group-item">Preferenze lingua dell’interfaccia</li>
+            <li class="list-group-item">Anteprima immagine durante la creazione annuncio</li>
+            <li class="list-group-item">Gestione avanzata dello stato degli annunci</li>
+            <li class="list-group-item">Miglioramento della pagina dettaglio annuncio</li>
+            <li class="list-group-item">Miglioramento responsive per dispositivi mobili</li>
+        </ul>
     </div>
 </section>
 <?php require __DIR__ . '/includes/footer.php'; ?>

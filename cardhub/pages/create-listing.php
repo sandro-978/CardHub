@@ -65,6 +65,7 @@ require __DIR__ . '/../includes/header.php';
                 min="0.01"
                 max="99999999.99"
                 step="0.01"
+                placeholder="0.00"
                 required
             >
 
@@ -72,9 +73,6 @@ require __DIR__ . '/../includes/header.php';
                 Il prezzo massimo consentito è 99.999.999,99 €.
             </div>
 
-            <div class="form-text">
-                Prezzo massimo: 99.999.999,99 €.
-            </div>
         </div>
         <div>
             <label class="form-label" for="description">Descrizione</label>
