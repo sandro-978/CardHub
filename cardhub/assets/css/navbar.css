@@ -928,3 +928,27 @@
                 margin: 0 10px;
             }
         }
+
+
+        /* Badge notifica messaggi nella navbar */
+        .nav-link .badge {
+            font-size: 0.62rem;
+            min-width: 1.05rem;
+            height: 1.05rem;
+            padding: 0.12rem 0.34rem;
+            line-height: 0.9rem;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+            top: -0.45rem;
+            margin-left: -0.15rem;
+
+            font-weight: 700;
+            box-shadow: 0 0.15rem 0.45rem rgba(0, 0, 0, 0.25);
+
+            background-color: #f97316 !important;
+            color: #ffffff !important;
+        }

@@ -1,85 +1,230 @@
 <?php
-$pageTitle = 'Dettaglio carta';
-require __DIR__ . '/../includes/header.php';
-require_once __DIR__ .'/../includes/db.php';
+require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/../includes/db.php';
+
+$pageTitle = 'Dettaglio annuncio';
 
 $dbconn = getDbConnection();
-$id_annuncio = $_GET['id'] ?? null;
-if (!$id_annuncio) {
-    echo '<main class="container>
-    <div class="detail-card"><h1>Annuncio non trovato</div>
-    </main>';
-    require_once __DIR__ .'/../includes/footer.php';
+
+$id_annuncio = (int)($_GET['id'] ?? 0);
+
+if ($id_annuncio <= 0) {
+    require __DIR__ . '/../includes/header.php';
+    ?>
+    <link rel="stylesheet" href="/assets/css/card-detail.css">
+
+    <section class="listing-detail-page">
+        <div class="listing-detail-empty">
+            <h1>Annuncio non valido</h1>
+            <p>L’annuncio richiesto non esiste o il collegamento non è corretto.</p>
+            <a href="/pages/marketplace.php" class="btn btn-primary">
+                Torna al marketplace
+            </a>
+        </div>
+    </section>
+
+    <?php
+    require __DIR__ . '/../includes/footer.php';
     exit;
 }
 
-$ris = pg_query_params($dbconn,'
-    SELECT listings.id AS id_annuncio,listings.user_id AS id_venditore,listings.price,listings.condition,listings.description,listings.status,listings.created_at,cards.name AS nome_carta,cards.game,cards.edition,cards.language,cards.image_url,users.username AS nome_venditore
-    FROM listings JOIN cards ON listings.card_id = cards.id JOIN users ON listings.user_id = users.id
+$result = pg_query_params(
+    $dbconn,
+    '
+    SELECT
+        listings.id AS id_annuncio,
+        listings.user_id AS id_venditore,
+        listings.price,
+        listings.condition,
+        listings.description,
+        listings.status,
+        listings.created_at,
+        cards.name AS nome_carta,
+        cards.game,
+        cards.edition,
+        cards.language,
+        cards.image_url,
+        users.username AS nome_venditore
+    FROM listings
+    INNER JOIN cards ON listings.card_id = cards.id
+    INNER JOIN users ON listings.user_id = users.id
     WHERE listings.id = $1
-',[$id_annuncio]);
+    LIMIT 1
+    ',
+    [$id_annuncio]
+);
 
-$annuncio = pg_fetch_assoc($ris);
+if (!$result) {
+    require __DIR__ . '/../includes/header.php';
+    ?>
+    <link rel="stylesheet" href="/assets/css/card-detail.css">
+
+    <section class="listing-detail-page">
+        <div class="listing-detail-empty">
+            <h1>Errore di caricamento</h1>
+            <p>Non è stato possibile caricare il dettaglio dell’annuncio.</p>
+            <a href="/pages/marketplace.php" class="btn btn-primary">
+                Torna al marketplace
+            </a>
+        </div>
+    </section>
+
+    <?php
+    require __DIR__ . '/../includes/footer.php';
+    exit;
+}
+
+$annuncio = pg_fetch_assoc($result);
+
 if (!$annuncio) {
-    echo '<main class="container"><div class="detail-card"><h1>Annuncio non trovato</h1></div></main>';
-    require_once __DIR__ .'/../includes/footer.php';
+    require __DIR__ . '/../includes/header.php';
+    ?>
+    <link rel="stylesheet" href="/assets/css/card-detail.css">
+
+    <section class="listing-detail-page">
+        <div class="listing-detail-empty">
+            <h1>Annuncio non trovato</h1>
+            <p>L’annuncio potrebbe essere stato eliminato o non essere più disponibile.</p>
+            <a href="/pages/marketplace.php" class="btn btn-primary">
+                Torna al marketplace
+            </a>
+        </div>
+    </section>
+
+    <?php
+    require __DIR__ . '/../includes/footer.php';
     exit;
 }
 
 $imageUrl = $annuncio['image_url'] ?: '/assets/img/placeholder-card.png';
+$isOwner = isLoggedIn() && currentUserId() === (int)$annuncio['id_venditore'];
+
+$statusLabels = [
+    'active' => 'Attivo',
+    'inactive' => 'Non attivo',
+    'sold' => 'Venduto'
+];
+
+$statusLabel = $statusLabels[$annuncio['status']] ?? ucfirst($annuncio['status']);
+
+require __DIR__ . '/../includes/header.php';
 ?>
 
-<main class= "container">
-    <section class="card-detail-layout">
-        <div class="card-detail-image-box">
-            <img src="<?= htmlspecialchars($imageUrl)?>"
-                 alt="<?= htmlspecialchars($annuncio['nome_carta'])?>"
-                 class = "card-detail-image">
+<link rel="stylesheet" href="/assets/css/card-detail.css">
+
+<section class="listing-detail-page">
+    <div class="listing-detail-shell">
+        <div class="listing-detail-image-panel">
+            <img
+                src="<?= htmlspecialchars($imageUrl) ?>"
+                alt="<?= htmlspecialchars($annuncio['nome_carta']) ?>"
+                class="listing-detail-image"
+            >
         </div>
-        <div class = "card-detail-info">
 
-            <h1 class="card-detail-title">
-                <?= htmlspecialchars($annuncio['nome_carta'])?>
-            </h1>
-            <p class="card-detatil-meta">
-            <?= htmlspecialchars($annuncio['game'])?> ·
-            <?= htmlspecialchars($annuncio['edition'])?> ·
-            <?= htmlspecialchars($annuncio['language'])?> ·
-            <?= htmlspecialchars($annuncio['condition'])?> 
-            </p>
+        <div class="listing-detail-info-panel">
+            <div class="listing-detail-header">
+                <span class="listing-detail-status status-<?= htmlspecialchars($annuncio['status']) ?>">
+                    <?= htmlspecialchars($statusLabel) ?>
+                </span>
 
-            <p class="card-detatil-price">
-                € <?= number_format((float)$annuncio['price'],2,'.','') ?> 
-            </p>
+                <h1><?= htmlspecialchars($annuncio['nome_carta']) ?></h1>
 
-            <p class="card-detail-description">
-                <?= htmlspecialchars($annuncio['description'])?>
-            </p>
-
-            <div class="card-detail-seller">
-                <span>Venditore:</span>
-                <strong><?= htmlspecialchars($annuncio['nome_venditore'])?></strong>
+                <p class="listing-detail-subtitle">
+                    <?= htmlspecialchars($annuncio['game']) ?> ·
+                    <?= htmlspecialchars($annuncio['edition']) ?> ·
+                    <?= htmlspecialchars($annuncio['language']) ?>
+                </p>
             </div>
 
-        <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != $annuncio['id_venditore']):?>
-            <form action="/api/crea_chat.php" method="POST">
-                <input type="hidden" name="id_annuncio" value="<?= htmlspecialchars($annuncio['id_annuncio'])?>">
-                <button type="submit" class="btn-contact-seller">
-                    ✉️ Contatta il venditore 
-                </button>
-            </form>
-        <?php elseif(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $annuncio['id_venditore']):?>
-            <p class="seller-note">Questo annuncio è tuo</p>
-        <?php else:?>
-            <a href="/auth/login.php" class= "btn-contact-seller">
-                Accedi per contattare il venditore
-            </a>
-        <?php endif; ?>
+            <div class="listing-detail-price-box">
+                <span>Prezzo richiesto</span>
+                <strong>
+                    € <?= htmlspecialchars(number_format((float)$annuncio['price'], 2, ',', '.')) ?>
+                </strong>
+            </div>
 
-        <a href="/pages/marketplace.php" class="btn-back-marketplace">
-            ↩️ Torna al marketplace 
-        </a>
+            <div class="listing-detail-spec-grid">
+                <div>
+                    <span>Gioco</span>
+                    <strong><?= htmlspecialchars($annuncio['game']) ?></strong>
+                </div>
+
+                <div>
+                    <span>Edizione</span>
+                    <strong><?= htmlspecialchars($annuncio['edition']) ?></strong>
+                </div>
+
+                <div>
+                    <span>Lingua</span>
+                    <strong><?= htmlspecialchars($annuncio['language']) ?></strong>
+                </div>
+
+                <div>
+                    <span>Condizione</span>
+                    <strong><?= htmlspecialchars($annuncio['condition']) ?></strong>
+                </div>
+            </div>
+
+            <div class="listing-detail-description">
+                <h2>Descrizione</h2>
+
+                <?php if (trim($annuncio['description'] ?? '') === ''): ?>
+                    <p class="text-muted">
+                        Il venditore non ha inserito una descrizione per questo annuncio.
+                    </p>
+                <?php else: ?>
+                    <p><?= nl2br(htmlspecialchars($annuncio['description'])) ?></p>
+                <?php endif; ?>
+            </div>
+
+            <div class="listing-detail-seller-card">
+                <div>
+                    <span>Venditore</span>
+                    <strong><?= htmlspecialchars($annuncio['nome_venditore']) ?></strong>
+                </div>
+
+                <small>
+                    Pubblicato il <?= htmlspecialchars($annuncio['created_at']) ?>
+                </small>
+            </div>
+
+            <div class="listing-detail-actions">
+                <?php if (isLoggedIn() && !$isOwner && $annuncio['status'] === 'active'): ?>
+                    <form action="/api/crea_chat.php" method="POST">
+                        <input
+                            type="hidden"
+                            name="id_annuncio"
+                            value="<?= htmlspecialchars($annuncio['id_annuncio']) ?>"
+                        >
+
+                        <button type="submit" class="btn btn-warning">
+                            Contatta il venditore
+                        </button>
+                    </form>
+                <?php elseif ($isOwner): ?>
+                    <a
+                        href="/pages/edit-listing.php?id=<?= (int)$annuncio['id_annuncio'] ?>"
+                        class="btn btn-primary"
+                    >
+                        Modifica il tuo annuncio
+                    </a>
+                <?php elseif (!isLoggedIn()): ?>
+                    <a href="/auth/login.php" class="btn btn-warning">
+                        Accedi per contattare il venditore
+                    </a>
+                <?php else: ?>
+                    <button class="btn btn-secondary" disabled>
+                        Annuncio non contattabile
+                    </button>
+                <?php endif; ?>
+
+                <a href="/pages/marketplace.php" class="btn btn-outline-light">
+                    Torna al marketplace
+                </a>
+            </div>
+        </div>
     </div>
-    </section>
-</main>
+</section>
+
 <?php require __DIR__ . '/../includes/footer.php'; ?>

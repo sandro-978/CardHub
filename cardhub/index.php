@@ -40,13 +40,12 @@ require __DIR__ . '/includes/header.php';
             <li class="list-group-item">Sistema di annunci preferiti</li>
             <li class="list-group-item">Chat completa tra acquirente e venditore</li>
             <li class="list-group-item">Notifiche per nuovi messaggi</li>
-            <li class="list-group-item">Dashboard con statistiche reali</li>
-            <li class="list-group-item">Storico attività dell’utente</li>
+            <li class="list-group-item">✔️Dashboard con statistiche reali✔️</li>
             <li class="list-group-item">Impostazioni privacy del profilo</li>
             <li class="list-group-item">Preferenze lingua dell’interfaccia</li>
             <li class="list-group-item">Anteprima immagine durante la creazione annuncio</li>
             <li class="list-group-item">Gestione avanzata dello stato degli annunci</li>
-            <li class="list-group-item">Miglioramento della pagina dettaglio annuncio</li>
+            <li class="list-group-item">✔️Miglioramento della pagina dettaglio annuncio✔️</li>
             <li class="list-group-item">Miglioramento responsive per dispositivi mobili</li>
         </ul>
     </div>
