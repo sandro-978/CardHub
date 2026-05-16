@@ -7,7 +7,7 @@
     padding: 1.5rem;
 }
 
-form-label {
+.form-label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
@@ -28,3 +28,36 @@ form-label {
 .input-error + .error-message {
     display: block;
 }
+
+/* Anteprima immagine creazione annuncio */
+.image-preview-box {
+    border: 1px solid #d9dee8;
+    border-radius: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+}
+
+.image-preview-box strong {
+    color: #212529;
+    font-size: 0.95rem;
+}
+
+.image-preview {
+    width: 100%;
+    max-height: 360px;
+    object-fit: contain;
+    border-radius: 0.75rem;
+    border: 1px solid #d9dee8;
+    background: #ffffff;
+    padding: 0.5rem;
+}
+
+#removeImagePreview {
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+#imageError {
+    font-weight: 500;
+}
+

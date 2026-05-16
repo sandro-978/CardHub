@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/session.php';
+
 $pageTitle = $pageTitle ?? APP_NAME;
 ?>
 <!DOCTYPE html>
@@ -9,6 +10,7 @@ $pageTitle = $pageTitle ?? APP_NAME;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($pageTitle) ?> - <?= APP_NAME ?></title>
+
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/forms.css">
@@ -16,4 +18,5 @@ $pageTitle = $pageTitle ?? APP_NAME;
 </head>
 <body>
 <?php require __DIR__ . '/navbar.php'; ?>
-<main class="container py-4">
+
+<main class="container main-container py-4">

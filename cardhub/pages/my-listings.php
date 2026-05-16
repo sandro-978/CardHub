@@ -40,128 +40,223 @@ if (!$result) {
 
 $listings = pg_fetch_all($result) ?: [];
 
+function formatListingDate(?string $dateValue): string
+{
+    if (!$dateValue) {
+        return 'Data non disponibile';
+    }
+
+    $date = date_create($dateValue);
+
+    if (!$date) {
+        return $dateValue;
+    }
+
+    return date_format($date, 'd/m/Y H:i');
+}
+
+function listingStatusLabel(string $status): string
+{
+    return match ($status) {
+        'active' => 'Attivo',
+        'sold' => 'Venduto',
+        'inactive' => 'Non attivo',
+        default => ucfirst($status),
+    };
+}
+
+$activeCount = 0;
+$soldCount = 0;
+$inactiveCount = 0;
+
+foreach ($listings as $listing) {
+    if ($listing['status'] === 'active') {
+        $activeCount++;
+    } elseif ($listing['status'] === 'sold') {
+        $soldCount++;
+    } else {
+        $inactiveCount++;
+    }
+}
+
 $pageTitle = 'I miei annunci';
 require __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="cardhub-panel">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<link rel="stylesheet" href="/assets/css/my-listings.css">
+
+<section class="my-listings-page">
+    <div class="my-listings-hero">
         <div>
-            <h1 class="h3 mb-1">I miei annunci</h1>
-            <p class="text-muted mb-0">Annunci pubblicati dal tuo account.</p>
+            <p class="my-listings-eyebrow">Area venditore</p>
+            <h1>I miei annunci</h1>
+            <p>
+                Gestisci gli annunci pubblicati dal tuo account, modifica i dettagli,
+                controlla lo stato delle inserzioni o rimuovi gli annunci non più necessari.
+            </p>
         </div>
 
-        <a href="/pages/create-listing.php" class="btn btn-primary">
-            Nuovo annuncio
-        </a>
+        <div class="my-listings-hero-actions">
+            <a href="/pages/create-listing.php" class="btn btn-warning">
+                Nuovo annuncio
+            </a>
+
+            <a href="/pages/marketplace.php" class="btn btn-outline-light">
+                Marketplace
+            </a>
+        </div>
+    </div>
+
+    <div class="my-listings-stats">
+        <article>
+            <span>Totale annunci</span>
+            <strong><?= count($listings) ?></strong>
+        </article>
+
+        <article>
+            <span>Attivi</span>
+            <strong><?= $activeCount ?></strong>
+        </article>
+
+        <article>
+            <span>Venduti</span>
+            <strong><?= $soldCount ?></strong>
+        </article>
+
+        <article>
+            <span>Non attivi</span>
+            <strong><?= $inactiveCount ?></strong>
+        </article>
     </div>
 
     <?php if (isset($_GET['updated'])): ?>
-        <div class="alert alert-success">
+        <div class="my-listings-alert success">
             Annuncio aggiornato correttamente.
         </div>
     <?php endif; ?>
 
     <?php if (isset($_GET['deleted'])): ?>
-        <div class="alert alert-success">
+        <div class="my-listings-alert success">
             Annuncio eliminato correttamente.
         </div>
     <?php endif; ?>
 
     <?php if (count($listings) === 0): ?>
-        <div class="alert alert-info">
-            Non hai ancora pubblicato annunci.
+        <div class="my-listings-empty">
+            <h2>Nessun annuncio pubblicato</h2>
+            <p>
+                Non hai ancora creato annunci. Pubblica la tua prima carta
+                per renderla visibile nel marketplace.
+            </p>
+
+            <a href="/pages/create-listing.php" class="btn btn-warning">
+                Crea il primo annuncio
+            </a>
         </div>
     <?php else: ?>
-        <div class="row g-3">
+        <div class="my-listings-grid">
             <?php foreach ($listings as $listing): ?>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 shadow-sm">
+                <?php
+                $imageUrl = $listing['image_url'] ?: '/assets/img/placeholder-card.png';
+                $status = $listing['status'];
+                $description = trim($listing['description'] ?? '');
+
+                if ($description === '') {
+                    $description = 'Nessuna descrizione inserita.';
+                }
+
+                if (strlen($description) > 150) {
+                    $description = substr($description, 0, 150) . '...';
+                }
+                ?>
+
+                <article class="my-listing-card">
+                    <div class="my-listing-image-wrap">
                         <img
-                            src="<?= htmlspecialchars($listing['image_url'] ?: '/assets/img/placeholder-card.png') ?>"
-                            class="card-img-top"
+                            src="<?= htmlspecialchars($imageUrl) ?>"
                             alt="<?= htmlspecialchars($listing['card_name']) ?>"
-                            style="height: 220px; object-fit: cover;"
                         >
 
-                        <div class="card-body d-flex flex-column">
-                            <h2 class="h5">
-                                <?= htmlspecialchars($listing['card_name']) ?>
-                            </h2>
+                        <span class="my-listing-status status-<?= htmlspecialchars($status) ?>">
+                            <?= htmlspecialchars(listingStatusLabel($status)) ?>
+                        </span>
+                    </div>
 
-                            <p class="text-muted small">
+                    <div class="my-listing-body">
+                        <div class="my-listing-main">
+                            <h2><?= htmlspecialchars($listing['card_name']) ?></h2>
+
+                            <p class="my-listing-meta">
                                 <?= htmlspecialchars($listing['game']) ?> ·
                                 <?= htmlspecialchars($listing['edition']) ?> ·
                                 <?= htmlspecialchars($listing['language']) ?>
                             </p>
+                        </div>
 
-                            <p class="mb-1">
-                                <strong>Prezzo:</strong>
-                                € <?= htmlspecialchars(number_format((float)$listing['price'], 2, ',', '.')) ?>
-                            </p>
+                        <div class="my-listing-price-row">
+                            <div>
+                                <span>Prezzo</span>
+                                <strong>
+                                    € <?= htmlspecialchars(number_format((float)$listing['price'], 2, ',', '.')) ?>
+                                </strong>
+                            </div>
 
-                            <p class="mb-1">
-                                <strong>Condizione:</strong>
-                                <?= htmlspecialchars($listing['condition']) ?>
-                            </p>
-
-                            <p class="mb-1">
-                                <strong>Stato:</strong>
-                                <?= htmlspecialchars($listing['status']) ?>
-                            </p>
-
-                            <p class="small text-muted flex-grow-1">
-                                <?= htmlspecialchars($listing['description'] ?: 'Nessuna descrizione inserita.') ?>
-                            </p>
-
-                            <div class="d-flex gap-2 mt-3">
-                                <a
-                                    href="/pages/card-detail.php?id=<?= urlencode($listing['id']) ?>"
-                                    class="btn btn-outline-secondary btn-sm"
-                                >
-                                    Dettaglio
-                                </a>
-
-                                <a
-                                    href="/pages/edit-listing.php?id=<?= urlencode($listing['id']) ?>"
-                                    class="btn btn-primary btn-sm"
-                                >
-                                    Modifica
-                                </a>
-
-                                <form
-                                    action="/pages/delete-listing-handler.php"
-                                    method="POST"
-                                    onsubmit="return confirm('Vuoi eliminare definitivamente questo annuncio?');"
-                                    class="d-inline"
-                                >
-                                    <input
-                                        type="hidden"
-                                        name="listingId"
-                                        value="<?= htmlspecialchars($listing['id']) ?>"
-                                    >
-
-                                    <input
-                                        type="hidden"
-                                        name="deleteListingToken"
-                                        value="<?= htmlspecialchars($_SESSION['delete_listing_token']) ?>"
-                                    >
-
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        Elimina
-                                    </button>
-                                </form>
+                            <div>
+                                <span>Condizione</span>
+                                <strong><?= htmlspecialchars($listing['condition']) ?></strong>
                             </div>
                         </div>
 
-                        <div class="card-footer text-muted small">
-                            Pubblicato il <?= htmlspecialchars($listing['created_at']) ?>
+                        <p class="my-listing-description">
+                            <?= htmlspecialchars($description) ?>
+                        </p>
+
+                        <div class="my-listing-actions">
+                            <a
+                                href="/pages/card-detail.php?id=<?= urlencode($listing['id']) ?>"
+                                class="btn btn-outline-secondary btn-sm"
+                            >
+                                Dettaglio
+                            </a>
+
+                            <a
+                                href="/pages/edit-listing.php?id=<?= urlencode($listing['id']) ?>"
+                                class="btn btn-primary btn-sm"
+                            >
+                                Modifica
+                            </a>
+
+                            <form
+                                action="/pages/delete-listing-handler.php"
+                                method="POST"
+                                onsubmit="return confirm('Vuoi eliminare definitivamente questo annuncio?');"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="listingId"
+                                    value="<?= htmlspecialchars($listing['id']) ?>"
+                                >
+
+                                <input
+                                    type="hidden"
+                                    name="deleteListingToken"
+                                    value="<?= htmlspecialchars($_SESSION['delete_listing_token']) ?>"
+                                >
+
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    Elimina
+                                </button>
+                            </form>
                         </div>
                     </div>
-                </div>
+
+                    <footer class="my-listing-footer">
+                        Pubblicato il <?= htmlspecialchars(formatListingDate($listing['created_at'])) ?>
+                    </footer>
+                </article>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
-</div>
+</section>
 
 <?php require __DIR__ . '/../includes/footer.php'; ?>

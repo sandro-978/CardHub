@@ -1,24 +1,34 @@
 // Funzione utility per aggiungere/rimuovere la classe di errore a un campo del form
 function setFieldError(field, hasError) {
-    // Se il campo non esiste, esci dalla funzione
     if (!field) return;
-    // Aggiungi o rimuovi la classe 'input-error' in base al parametro hasError
+
     field.classList.toggle('input-error', hasError);
+    field.classList.toggle('is-invalid', hasError);
 }
+
+const MAX_LISTING_PRICE = 99999999.99;
+
+const ALLOWED_IMAGE_TYPES = [
+    'image/png',
+    'image/jpeg',
+    'image/gif',
+    'image/webp'
+];
 
 // Funzione per validare il form di registrazione
 function validateRegistrationForm() {
-    // Seleziona il form di registrazione
     const form = document.forms['registrationForm'];
-    // Ottieni i campi email, password e username dal form
+
+    if (!form) {
+        return true;
+    }
+
     const email = form.inputEmail;
     const password = form.inputPassword;
     const username = form.inputUsername;
 
-    // Inizializza la variabile di validità
     let valid = true;
 
-    // Valida l'email: deve contenere '@'
     if (!email.value.includes('@')) {
         setFieldError(email, true);
         valid = false;
@@ -26,7 +36,6 @@ function validateRegistrationForm() {
         setFieldError(email, false);
     }
 
-    // Valida la password: deve avere almeno 8 caratteri
     if (password.value.length < 8) {
         setFieldError(password, true);
         valid = false;
@@ -34,7 +43,6 @@ function validateRegistrationForm() {
         setFieldError(password, false);
     }
 
-    // Valida l'username: deve avere almeno 3 caratteri (dopo rimozione spazi)
     if (username.value.trim().length < 3) {
         setFieldError(username, true);
         valid = false;
@@ -42,40 +50,52 @@ function validateRegistrationForm() {
         setFieldError(username, false);
     }
 
-    // Ritorna true se tutti i campi sono validi, false altrimenti
     return valid;
 }
 
 // Funzione per validare il form dell'annuncio
 function validateListingForm() {
-    // Seleziona il form dell'annuncio
     const form = document.forms['listingForm'];
-    // Converte il valore del prezzo a numero
-    const price = Number(form.price.value);
 
-    // Valida il prezzo: deve essere un numero valido e maggiore di 0
-    if (Number.isNaN(price) || price <= 0) {
+    if (!form) {
+        return true;
+    }
+
+    const price = Number(form.price.value);
+    const priceError = document.getElementById('priceError');
+
+    if (Number.isNaN(price) || price <= 0 || price > MAX_LISTING_PRICE) {
         setFieldError(form.price, true);
+
+        if (priceError) {
+            priceError.classList.remove('d-none');
+        }
+
         return false;
     }
 
-    // Se la validazione passa, rimuovi la classe di errore
     setFieldError(form.price, false);
-    return true;
+
+    if (priceError) {
+        priceError.classList.add('d-none');
+    }
+
+    return validateSelectedImage();
 }
 
 // Funzione per validare il form della carta
 function validateCardForm() {
-    // Seleziona il form della carta
     const form = document.forms['cardForm'];
-    // Ottieni il nome della carta (trim per rimuovere spazi)
+
+    if (!form) {
+        return true;
+    }
+
     const name = form.inputName.value.trim();
-    // Ottieni l'edizione della carta (trim per rimuovere spazi)
     const edition = form.inputEdition.value.trim();
-    // Inizializza la variabile di validità
+
     let valid = true;
 
-    // Valida il nome: deve avere almeno 2 caratteri
     if (name.length < 2) {
         setFieldError(form.inputName, true);
         valid = false;
@@ -83,7 +103,6 @@ function validateCardForm() {
         setFieldError(form.inputName, false);
     }
 
-    // Valida l'edizione: deve avere almeno 2 caratteri
     if (edition.length < 2) {
         setFieldError(form.inputEdition, true);
         valid = false;
@@ -91,48 +110,151 @@ function validateCardForm() {
         setFieldError(form.inputEdition, false);
     }
 
-    // Ritorna true se tutti i campi sono validi, false altrimenti
     return valid;
 }
 
+function validateSelectedImage() {
+    const imageInput = document.getElementById('cardImage');
+    const imageError = document.getElementById('imageError');
+
+    if (!imageInput || imageInput.files.length === 0) {
+        hideImageError();
+        return true;
+    }
+
+    const file = imageInput.files[0];
+
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+        showImageError('Il file selezionato non è un’immagine valida.');
+        clearImagePreview();
+        return false;
+    }
+
+    hideImageError();
+    return true;
+}
+
+function setupImagePreview() {
+    const imageInput = document.getElementById('cardImage');
+    const previewBox = document.getElementById('imagePreviewBox');
+    const previewImage = document.getElementById('cardImagePreview');
+    const removeButton = document.getElementById('removeImagePreview');
+
+    if (!imageInput || !previewBox || !previewImage) {
+        return;
+    }
+
+    imageInput.addEventListener('change', function () {
+        if (imageInput.files.length === 0) {
+            clearImagePreview();
+            return;
+        }
+
+        const file = imageInput.files[0];
+
+        if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+            showImageError('Il file selezionato non è un’immagine valida.');
+            clearImagePreview();
+            return;
+        }
+
+        hideImageError();
+
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+            previewImage.src = event.target.result;
+            previewBox.classList.remove('d-none');
+        };
+
+        reader.onerror = function () {
+            showImageError('Errore durante il caricamento dell’anteprima.');
+            clearImagePreview();
+        };
+
+        reader.readAsDataURL(file);
+    });
+
+    if (removeButton) {
+        removeButton.addEventListener('click', function () {
+            imageInput.value = '';
+            clearImagePreview();
+            hideImageError();
+        });
+    }
+}
+
+function clearImagePreview() {
+    const previewBox = document.getElementById('imagePreviewBox');
+    const previewImage = document.getElementById('cardImagePreview');
+
+    if (previewImage) {
+        previewImage.src = '';
+    }
+
+    if (previewBox) {
+        previewBox.classList.add('d-none');
+    }
+}
+
+function showImageError(message) {
+    const imageInput = document.getElementById('cardImage');
+    const imageError = document.getElementById('imageError');
+
+    if (imageInput) {
+        setFieldError(imageInput, true);
+    }
+
+    if (imageError) {
+        imageError.textContent = message;
+        imageError.classList.remove('d-none');
+    }
+}
+
+function hideImageError() {
+    const imageInput = document.getElementById('cardImage');
+    const imageError = document.getElementById('imageError');
+
+    if (imageInput) {
+        setFieldError(imageInput, false);
+    }
+
+    if (imageError) {
+        imageError.classList.add('d-none');
+    }
+}
 
 // Attendi il caricamento completo del DOM prima di aggiungere gli event listener
 document.addEventListener('DOMContentLoaded', () => {
-    // Seleziona il form di registrazione
     const registrationForm = document.forms['registrationForm'];
-    // Se il form esiste, aggiungi il listener al submit
+
     if (registrationForm) {
         registrationForm.addEventListener('submit', (e) => {
-            // Se la validazione fallisce, previeni l'invio del form
             if (!validateRegistrationForm()) {
                 e.preventDefault();
             }
         });
     }
 
-    // Seleziona il form dell'annuncio
-    const listingForm = document.forms['listingForm']; 
+    const listingForm = document.forms['listingForm'];
+
     if (listingForm) {
-        // Aggiungi il listener al submit del form annuncio
+        setupImagePreview();
+
         listingForm.addEventListener('submit', (e) => {
-            // Se la validazione fallisce, previeni l'invio del form
             if (!validateListingForm()) {
                 e.preventDefault();
             }
         });
     }
 
-    // Seleziona il form della carta
-    const cardForm = document.forms['cardForm']; 
+    const cardForm = document.forms['cardForm'];
+
     if (cardForm) {
-        // Aggiungi il listener al submit del form carta
         cardForm.addEventListener('submit', (e) => {
-            // Se la validazione fallisce, previeni l'invio del form
             if (!validateCardForm()) {
                 e.preventDefault();
             }
         });
     }
 });
-
-
